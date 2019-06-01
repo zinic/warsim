@@ -5,8 +5,8 @@ import (
 	"math/rand"
 	"strconv"
 	"strings"
-	//"bufio"
-	//"os"
+	"bufio"
+	"os"
 	"time"
 )
 
@@ -523,24 +523,24 @@ func writeSeigeOfThraneBase() {
 		}
 	}
 
-	//stdinC := make(chan string)
-	//reader := bufio.NewReader(os.Stdin)
+	stdinC := make(chan string)
+	reader := bufio.NewReader(os.Stdin)
 
-	//go func() {
-	//	for {
-	//		if text, err := reader.ReadString('\n'); err != nil {
-	//			os.Exit(0)
-	//		} else {
-	//			stdinC <- text
-	//		}
-	//	}
-	//}()
+	go func() {
+		for {
+			if text, err := reader.ReadString('\n'); err != nil {
+				os.Exit(0)
+			} else {
+				stdinC <- text
+			}
+		}
+	}()
 
-	//for {
-	//	if !world.Turn() {
-	//		break
-	//	}
-	//}
+	for range stdinC {
+		if !world.Turn() {
+			break
+		}
+	}
 
 	if err := WriteWorld("siege_of_thrane.toml", world); err != nil {
 		fmt.Printf("Error writing world: %v.", err)
