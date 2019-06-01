@@ -1,195 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"math/rand"
-	"strconv"
-	"strings"
-	"bufio"
 	"os"
+	"strings"
 	"time"
 )
-
-func parseFacesAndModifier(facesModifierStr string) (int, int, error) {
-	const (
-		dieFaces    = 0
-		dieModifier = 1
-	)
-
-	var (
-		err      error
-		faces    int64 = 0
-		modifier int64 = 0
-	)
-
-	// Check for additive modifiers first
-	splitStr := "+"
-	hasModifier := strings.Contains(facesModifierStr, splitStr)
-
-	if !hasModifier {
-		// If we didn't find an additive modifier see if there's a subtractive one
-		splitStr = "-"
-		hasModifier = strings.Contains(facesModifierStr, splitStr)
-	}
-
-	if hasModifier {
-		if facesModifierParts := strings.Split(facesModifierStr, splitStr); len(facesModifierParts) != 2 {
-			return 0, 0, fmt.Errorf("expected two values but got %v", facesModifierParts)
-		} else if faces, err = strconv.ParseInt(facesModifierParts[dieFaces], 10, 32); err != nil {
-			return 0, 0, err
-		} else if modifier, err = strconv.ParseInt(facesModifierParts[dieModifier], 10, 32); err != nil {
-			return 0, 0, err
-		}
-
-		if splitStr == "-" {
-			// Make sure to make the modifier negative if this is a subtractive modifier
-			modifier *= -1
-		}
-	} else if faces, err = strconv.ParseInt(facesModifierStr, 10, 32); err != nil {
-		return 0, 0, err
-	}
-
-	return int(faces), int(modifier), nil
-}
-
-type Die string
-
-func (s Die) String() string {
-	return strings.ToLower(strings.TrimSpace(string(s)))
-}
-
-func (s Die) Roll() (int, error) {
-	const (
-		numDicePart          = 0
-		facesAndModifierPart = 1
-	)
-
-	// Start with the default of one die
-	numDice := 1
-
-	if parts := strings.Split(s.String(), "d"); len(parts) != 2 {
-		return 0, fmt.Errorf("%s is not a valid roll", s)
-	} else {
-		if len(parts[numDicePart]) >= 0 {
-			if parsedNumDice, err := strconv.ParseInt(parts[numDicePart], 10, 32); err != nil {
-				return 0, fmt.Errorf("%s is not a valid roll: %v", s, err)
-			} else {
-				numDice = int(parsedNumDice)
-			}
-		}
-
-		if faces, modifier, err := parseFacesAndModifier(parts[facesAndModifierPart]); err != nil {
-			return 0, fmt.Errorf("%s is not a valid roll: %v", s, err)
-		} else {
-			total := 0
-			for roll := 0; roll < numDice; roll++ {
-				total += rand.Int()%faces + 1 + modifier
-			}
-
-			return total, nil
-		}
-	}
-}
-
-type RollSpec []Die
-
-func (s RollSpec) Roll() (int, error) {
-	sum := 0
-	for _, die := range s {
-		if nextRoll, err := die.Roll(); err != nil {
-			return 0, err
-		} else {
-			sum += nextRoll
-		}
-	}
-
-	return sum, nil
-}
-
-type HealthTracker struct {
-	Current int
-	Max     int
-}
-
-func (s *HealthTracker) Damage(amount int) {
-	s.Current -= amount
-}
-
-type FortificationType uint
-type Fortification struct {
-	Name            string
-	Type            FortificationType
-	DefenseModifier int
-	AttackModifier  int
-}
-
-type Army struct {
-	Name        string
-	HP          *HealthTracker
-	AC          int
-	AttackRoll  RollSpec
-	DamageRoll  RollSpec
-	Location    string
-	Destination string
-	Allegiance  string
-	Destroyed   bool
-}
-
-type Settlement struct {
-	Name           string
-	HP             *HealthTracker
-	AttackRoll     RollSpec
-	DamageRoll     RollSpec
-	HasWarGuard    bool
-	Fortifications []Fortification
-	Allegiance     string
-	Occupied       bool
-	Population     uint
-}
-
-func (s *Settlement) AC() int {
-	var (
-		seenTypes    []FortificationType
-		settlementAC = 0
-	)
-
-	for _, fortification := range s.Fortifications {
-		seen := false
-		for _, seenType := range seenTypes {
-			if fortification.Type == seenType {
-				seen = true
-				break
-			}
-		}
-
-		if seen {
-			continue
-		}
-
-		settlementAC += fortification.DefenseModifier
-	}
-
-	return settlementAC
-}
-
-func (s *Settlement) RollAttack() (int, int, error) {
-	attackModifier := 0
-	for _, fortification := range s.Fortifications {
-		attackModifier += fortification.AttackModifier
-	}
-
-	if attackRoll, err := s.AttackRoll.Roll(); err != nil {
-		return 0, 0, err
-	} else if damageRoll, err := s.DamageRoll.Roll(); err != nil {
-		return 0, 0, err
-	} else {
-		return attackRoll + attackModifier, damageRoll, nil
-	}
-}
-
-type WorldActor struct {
-	Name string
-}
 
 type World struct {
 	TurnID      uint
@@ -350,31 +168,49 @@ func (s *World) Turn() bool {
 	return armiesActive || settlementsActive
 }
 
-const (
-	Walls             = FortificationType(0)
-	WallFortification = FortificationType(1)
-)
-
 var (
 	WoodenWalls = Fortification{
 		Name:            "Wooden Walls",
-		Type:            Walls,
+		Type:            Wall,
 		DefenseModifier: 10,
-		AttackModifier:  0,
+		AttackModifier:  1,
 	}
 
 	StoneWalls = Fortification{
 		Name:            "Stone Walls",
-		Type:            Walls,
+		Type:            Wall,
 		DefenseModifier: 15,
-		AttackModifier:  0,
+		AttackModifier:  3,
 	}
 )
 
 func main() {
 	rand.Seed(time.Now().Unix())
 
-	writeSeigeOfThraneBase()
+	stdinC := make(chan string)
+	reader := bufio.NewReader(os.Stdin)
+
+	go func() {
+		for {
+			if text, err := reader.ReadString('\n'); err != nil {
+				os.Exit(0)
+			} else {
+				stdinC <- text
+			}
+		}
+	}()
+
+	const filePath = "siege_of_thrane.0.toml"
+	if world, err := LoadWorld(filePath); err != nil {
+		fmt.Printf("Failed to load world %s: %v.", filePath, err)
+		os.Exit(1)
+	} else {
+		world.Turn()
+
+		if err := WriteWorld("siege_of_thrane.1.toml", world); err != nil {
+			fmt.Printf("Error writing world: %v.", err)
+		}
+	}
 }
 
 func writeSeigeOfThraneBase() {
@@ -520,25 +356,6 @@ func writeSeigeOfThraneBase() {
 			DamageRoll:  RollSpec{"d8"},
 			Location:    "UNSET_LOCATION",
 			Destination: "UNSET_LOCATION",
-		}
-	}
-
-	stdinC := make(chan string)
-	reader := bufio.NewReader(os.Stdin)
-
-	go func() {
-		for {
-			if text, err := reader.ReadString('\n'); err != nil {
-				os.Exit(0)
-			} else {
-				stdinC <- text
-			}
-		}
-	}()
-
-	for range stdinC {
-		if !world.Turn() {
-			break
 		}
 	}
 

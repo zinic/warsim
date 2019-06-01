@@ -1,0 +1,892 @@
+TurnID = 1
+
+[Settlements]
+  [Settlements.Aelyndar]
+    Name = "Aelyndar"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d4"]
+    HasWarGuard = false
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 4000
+    [Settlements.Aelyndar.HP]
+      Current = 40
+      Max = 40
+
+    [[Settlements.Aelyndar.Fortifications]]
+      Name = "Wooden Walls"
+      Type = 0
+      DefenseModifier = 10
+      AttackModifier = 1
+
+    [[Settlements.Aelyndar.Fortifications]]
+      Name = "Wooden Battlements"
+      Type = 1
+      DefenseModifier = 4
+      AttackModifier = 1
+  [Settlements."Angwar Keep"]
+    Name = "Angwar Keep"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d4"]
+    HasWarGuard = true
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 7000
+    [Settlements."Angwar Keep".HP]
+      Current = 70
+      Max = 70
+
+    [[Settlements."Angwar Keep".Fortifications]]
+      Name = "Stone Walls"
+      Type = 0
+      DefenseModifier = 15
+      AttackModifier = 3
+
+    [[Settlements."Angwar Keep".Fortifications]]
+      Name = "Stone Battlements"
+      Type = 1
+      DefenseModifier = 7
+      AttackModifier = 2
+  [Settlements."Arythawn Keep"]
+    Name = "Arythawn Keep"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d6"]
+    HasWarGuard = true
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 5000
+    [Settlements."Arythawn Keep".HP]
+      Current = 50
+      Max = 50
+
+    [[Settlements."Arythawn Keep".Fortifications]]
+      Name = "Stone Walls"
+      Type = 0
+      DefenseModifier = 15
+      AttackModifier = 3
+
+    [[Settlements."Arythawn Keep".Fortifications]]
+      Name = "Stone Battlements"
+      Type = 1
+      DefenseModifier = 7
+      AttackModifier = 2
+  [Settlements.Athandra]
+    Name = "Athandra"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d4-1"]
+    HasWarGuard = true
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 20000
+    [Settlements.Athandra.HP]
+      Current = 188
+      Max = 200
+
+    [[Settlements.Athandra.Fortifications]]
+      Name = "Stone Walls"
+      Type = 0
+      DefenseModifier = 15
+      AttackModifier = 3
+
+    [[Settlements.Athandra.Fortifications]]
+      Name = "Wooden Battlements"
+      Type = 1
+      DefenseModifier = 4
+      AttackModifier = 1
+  [Settlements.Auxylgard]
+    Name = "Auxylgard"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d4"]
+    HasWarGuard = true
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 3000
+    [Settlements.Auxylgard.HP]
+      Current = 30
+      Max = 30
+
+    [[Settlements.Auxylgard.Fortifications]]
+      Name = "Stone Walls"
+      Type = 0
+      DefenseModifier = 15
+      AttackModifier = 3
+
+    [[Settlements.Auxylgard.Fortifications]]
+      Name = "Stone Battlements"
+      Type = 1
+      DefenseModifier = 7
+      AttackModifier = 2
+  [Settlements.Avaroth]
+    Name = "Avaroth"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d6"]
+    HasWarGuard = true
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 23000
+    [Settlements.Avaroth.HP]
+      Current = 230
+      Max = 230
+
+    [[Settlements.Avaroth.Fortifications]]
+      Name = "Stone Walls"
+      Type = 0
+      DefenseModifier = 15
+      AttackModifier = 3
+
+    [[Settlements.Avaroth.Fortifications]]
+      Name = "Stone Battlements"
+      Type = 1
+      DefenseModifier = 7
+      AttackModifier = 2
+  [Settlements.Danthaven]
+    Name = "Danthaven"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d6"]
+    HasWarGuard = true
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 25000
+    [Settlements.Danthaven.HP]
+      Current = 250
+      Max = 250
+
+    [[Settlements.Danthaven.Fortifications]]
+      Name = "Stone Walls"
+      Type = 0
+      DefenseModifier = 15
+      AttackModifier = 3
+
+    [[Settlements.Danthaven.Fortifications]]
+      Name = "Stone Battlements"
+      Type = 1
+      DefenseModifier = 7
+      AttackModifier = 2
+  [Settlements.Daskaran]
+    Name = "Daskaran"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d6-1"]
+    HasWarGuard = true
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 15000
+    [Settlements.Daskaran.HP]
+      Current = 150
+      Max = 150
+
+    [[Settlements.Daskaran.Fortifications]]
+      Name = "Stone Walls"
+      Type = 0
+      DefenseModifier = 15
+      AttackModifier = 3
+
+    [[Settlements.Daskaran.Fortifications]]
+      Name = "Stone Battlements"
+      Type = 1
+      DefenseModifier = 7
+      AttackModifier = 2
+  [Settlements.Flamekeep]
+    Name = "Flamekeep"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d8+1"]
+    HasWarGuard = true
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 50000
+    [Settlements.Flamekeep.HP]
+      Current = 500
+      Max = 500
+
+    [[Settlements.Flamekeep.Fortifications]]
+      Name = "Stone Walls"
+      Type = 0
+      DefenseModifier = 15
+      AttackModifier = 3
+
+    [[Settlements.Flamekeep.Fortifications]]
+      Name = "Stone Battlements"
+      Type = 1
+      DefenseModifier = 7
+      AttackModifier = 2
+
+    [[Settlements.Flamekeep.Fortifications]]
+      Name = "Holy Chapterhouse of the Silver Flame"
+      Type = 2
+      DefenseModifier = 3
+      AttackModifier = 4
+
+    [[Settlements.Flamekeep.Fortifications]]
+      Name = "Silver Flame Host Training Camp"
+      Type = 2
+      DefenseModifier = 4
+      AttackModifier = 2
+  [Settlements."Fort Light"]
+    Name = "Fort Light"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d6+1"]
+    HasWarGuard = true
+    Allegiance = "Aundair"
+    Occupied = true
+    Population = 17000
+    [Settlements."Fort Light".HP]
+      Current = 170
+      Max = 170
+
+    [[Settlements."Fort Light".Fortifications]]
+      Name = "Stone Walls"
+      Type = 0
+      DefenseModifier = 15
+      AttackModifier = 3
+
+    [[Settlements."Fort Light".Fortifications]]
+      Name = "Stone Battlements"
+      Type = 1
+      DefenseModifier = 7
+      AttackModifier = 2
+  [Settlements.Lessyk]
+    Name = "Lessyk"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d4"]
+    HasWarGuard = false
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 200
+    [Settlements.Lessyk.HP]
+      Current = 20
+      Max = 20
+
+    [[Settlements.Lessyk.Fortifications]]
+      Name = "Wooden Walls"
+      Type = 0
+      DefenseModifier = 10
+      AttackModifier = 0
+  [Settlements.Morningcrest]
+    Name = "Morningcrest"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d6"]
+    HasWarGuard = true
+    Allegiance = "Aundair"
+    Occupied = true
+    Population = 0
+    [Settlements.Morningcrest.HP]
+      Current = 100
+      Max = 100
+
+    [[Settlements.Morningcrest.Fortifications]]
+      Name = "Stone Walls"
+      Type = 0
+      DefenseModifier = 15
+      AttackModifier = 3
+
+    [[Settlements.Morningcrest.Fortifications]]
+      Name = "Stone Battlements"
+      Type = 1
+      DefenseModifier = 7
+      AttackModifier = 2
+  [Settlements.Nathyrr]
+    Name = "Nathyrr"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d4-2"]
+    HasWarGuard = true
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 8000
+    [Settlements.Nathyrr.HP]
+      Current = 100
+      Max = 100
+
+    [[Settlements.Nathyrr.Fortifications]]
+      Name = "Poorly Maintained Wooden Walls"
+      Type = 0
+      DefenseModifier = 10
+      AttackModifier = 0
+
+    [[Settlements.Nathyrr.Fortifications]]
+      Name = "Silver Flame Bastion"
+      Type = 2
+      DefenseModifier = 2
+      AttackModifier = 1
+  [Settlements.Olath]
+    Name = "Olath"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d4-1"]
+    HasWarGuard = true
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 9000
+    [Settlements.Olath.HP]
+      Current = 90
+      Max = 90
+
+    [[Settlements.Olath.Fortifications]]
+      Name = "Stone Walls"
+      Type = 0
+      DefenseModifier = 15
+      AttackModifier = 3
+
+    [[Settlements.Olath.Fortifications]]
+      Name = "Silver Flame Bastion"
+      Type = 2
+      DefenseModifier = 2
+      AttackModifier = 1
+  [Settlements.Rellekor]
+    Name = "Rellekor"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d20"]
+    HasWarGuard = true
+    Allegiance = "Aundair"
+    Occupied = true
+    Population = 5000
+    [Settlements.Rellekor.HP]
+      Current = 43
+      Max = 50
+
+    [[Settlements.Rellekor.Fortifications]]
+      Name = "Stone Walls"
+      Type = 0
+      DefenseModifier = 15
+      AttackModifier = 3
+
+    [[Settlements.Rellekor.Fortifications]]
+      Name = "Stone Battlements"
+      Type = 1
+      DefenseModifier = 7
+      AttackModifier = 2
+
+    [[Settlements.Rellekor.Fortifications]]
+      Name = "Desecrated Silver Flame Bastion"
+      Type = 2
+      DefenseModifier = 1
+      AttackModifier = 1
+  [Settlements.Shadukar]
+    Name = "Shadukar"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d4-2"]
+    HasWarGuard = true
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 5000
+    [Settlements.Shadukar.HP]
+      Current = 50
+      Max = 50
+
+    [[Settlements.Shadukar.Fortifications]]
+      Name = "Wooden Outer Walls"
+      Type = 3
+      DefenseModifier = 10
+      AttackModifier = 1
+
+    [[Settlements.Shadukar.Fortifications]]
+      Name = "Stone Walls"
+      Type = 0
+      DefenseModifier = 15
+      AttackModifier = 3
+  [Settlements.Sharavacion]
+    Name = "Sharavacion"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d4"]
+    HasWarGuard = true
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 17000
+    [Settlements.Sharavacion.HP]
+      Current = 170
+      Max = 170
+
+    [[Settlements.Sharavacion.Fortifications]]
+      Name = "Wooden Walls"
+      Type = 0
+      DefenseModifier = 10
+      AttackModifier = 1
+
+    [[Settlements.Sharavacion.Fortifications]]
+      Name = "Stone Battlements"
+      Type = 1
+      DefenseModifier = 7
+      AttackModifier = 2
+
+    [[Settlements.Sharavacion.Fortifications]]
+      Name = "Silver Flame Bastion"
+      Type = 2
+      DefenseModifier = 2
+      AttackModifier = 1
+  [Settlements.Sigilstar]
+    Name = "Sigilstar"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d6"]
+    HasWarGuard = true
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 26000
+    [Settlements.Sigilstar.HP]
+      Current = 260
+      Max = 260
+
+    [[Settlements.Sigilstar.Fortifications]]
+      Name = "Stone Walls"
+      Type = 0
+      DefenseModifier = 15
+      AttackModifier = 3
+
+    [[Settlements.Sigilstar.Fortifications]]
+      Name = "Stone Battlements"
+      Type = 1
+      DefenseModifier = 7
+      AttackModifier = 2
+  [Settlements."Silvercliff Castle"]
+    Name = "Silvercliff Castle"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d4"]
+    HasWarGuard = true
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 4000
+    [Settlements."Silvercliff Castle".HP]
+      Current = 40
+      Max = 40
+
+    [[Settlements."Silvercliff Castle".Fortifications]]
+      Name = "Heavy Stone Walls"
+      Type = 0
+      DefenseModifier = 17
+      AttackModifier = 5
+
+    [[Settlements."Silvercliff Castle".Fortifications]]
+      Name = "Stone Battlements"
+      Type = 1
+      DefenseModifier = 7
+      AttackModifier = 2
+  [Settlements.Siyar]
+    Name = "Siyar"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d4"]
+    HasWarGuard = false
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 4000
+    [Settlements.Siyar.HP]
+      Current = 40
+      Max = 40
+
+    [[Settlements.Siyar.Fortifications]]
+      Name = "Wooden Walls"
+      Type = 0
+      DefenseModifier = 10
+      AttackModifier = 0
+  [Settlements.Tellyn]
+    Name = "Tellyn"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d4"]
+    HasWarGuard = true
+    Allegiance = "Aundair"
+    Occupied = true
+    Population = 11000
+    [Settlements.Tellyn.HP]
+      Current = 105
+      Max = 110
+
+    [[Settlements.Tellyn.Fortifications]]
+      Name = "Stone Walls"
+      Type = 0
+      DefenseModifier = 15
+      AttackModifier = 3
+
+    [[Settlements.Tellyn.Fortifications]]
+      Name = "Stone Battlements"
+      Type = 1
+      DefenseModifier = 7
+      AttackModifier = 2
+
+    [[Settlements.Tellyn.Fortifications]]
+      Name = "Desecrated Silver Flame Bastion"
+      Type = 2
+      DefenseModifier = 1
+      AttackModifier = 1
+  [Settlements.Thaliost]
+    Name = "Thaliost"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d4"]
+    HasWarGuard = true
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 30000
+    [Settlements.Thaliost.HP]
+      Current = 250
+      Max = 300
+
+    [[Settlements.Thaliost.Fortifications]]
+      Name = "Stone Walls"
+      Type = 0
+      DefenseModifier = 15
+      AttackModifier = 3
+
+    [[Settlements.Thaliost.Fortifications]]
+      Name = "Stone Battlements"
+      Type = 1
+      DefenseModifier = 7
+      AttackModifier = 2
+
+    [[Settlements.Thaliost.Fortifications]]
+      Name = "Silver Flame Bastion"
+      Type = 2
+      DefenseModifier = 2
+      AttackModifier = 1
+  [Settlements."The Thornwood"]
+    Name = "The Thornwood"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d8+1"]
+    HasWarGuard = true
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 4000
+    [Settlements."The Thornwood".HP]
+      Current = 40
+      Max = 40
+
+    [[Settlements."The Thornwood".Fortifications]]
+      Name = "Stone Walls"
+      Type = 0
+      DefenseModifier = 15
+      AttackModifier = 3
+
+    [[Settlements."The Thornwood".Fortifications]]
+      Name = "Stone Battlements"
+      Type = 1
+      DefenseModifier = 7
+      AttackModifier = 2
+
+    [[Settlements."The Thornwood".Fortifications]]
+      Name = "Silver Flame Host Training Camp"
+      Type = 2
+      DefenseModifier = 4
+      AttackModifier = 2
+  [Settlements.Traelyn]
+    Name = "Traelyn"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d4"]
+    HasWarGuard = true
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 17000
+    [Settlements.Traelyn.HP]
+      Current = 170
+      Max = 170
+
+    [[Settlements.Traelyn.Fortifications]]
+      Name = "Stone Walls"
+      Type = 0
+      DefenseModifier = 15
+      AttackModifier = 3
+
+    [[Settlements.Traelyn.Fortifications]]
+      Name = "Stone Battlements"
+      Type = 1
+      DefenseModifier = 7
+      AttackModifier = 2
+  [Settlements.Valiron]
+    Name = "Valiron"
+    AttackRoll = ["d20"]
+    DamageRoll = ["d4"]
+    HasWarGuard = true
+    Allegiance = "Thrane"
+    Occupied = false
+    Population = 5000
+    [Settlements.Valiron.HP]
+      Current = 50
+      Max = 50
+
+    [[Settlements.Valiron.Fortifications]]
+      Name = "Wooden Walls"
+      Type = 0
+      DefenseModifier = 10
+      AttackModifier = 1
+
+    [[Settlements.Valiron.Fortifications]]
+      Name = "Silver Flame Bastion"
+      Type = 2
+      DefenseModifier = 2
+      AttackModifier = 1
+
+[Armies]
+  [Armies."Demon's Bane"]
+    Name = "Demon's Bane"
+    AC = 25
+    AttackRoll = ["d20+8"]
+    DamageRoll = ["2d4"]
+    Location = "Sigilstar"
+    Destination = "Sigilstar"
+    Allegiance = "Thrane"
+    Destroyed = false
+    [Armies."Demon's Bane".HP]
+      Current = 20
+      Max = 20
+  [Armies."Fifth Cog"]
+    Name = "Fifth Cog"
+    AC = 19
+    AttackRoll = ["d20"]
+    DamageRoll = ["d6"]
+    Location = "Rellekor"
+    Destination = "Rellekor"
+    Allegiance = "Aundair"
+    Destroyed = false
+    [Armies."Fifth Cog".HP]
+      Current = 100
+      Max = 100
+  [Armies."Fifth Host"]
+    Name = "Fifth Host"
+    AC = 19
+    AttackRoll = ["d20+6"]
+    DamageRoll = ["2d4"]
+    Location = "Thaliost"
+    Destination = "Thaliost"
+    Allegiance = "Thrane"
+    Destroyed = false
+    [Armies."Fifth Host".HP]
+      Current = 75
+      Max = 75
+  [Armies."First Chain"]
+    Name = "First Chain"
+    AC = 19
+    AttackRoll = ["d20+5"]
+    DamageRoll = ["d4"]
+    Location = "Tellyn"
+    Destination = "Tellyn"
+    Allegiance = "Aundair"
+    Destroyed = false
+    [Armies."First Chain".HP]
+      Current = 20
+      Max = 20
+  [Armies."First Cog"]
+    Name = "First Cog"
+    AC = 20
+    AttackRoll = ["d20+6"]
+    DamageRoll = ["d6+1"]
+    Location = "Morningcrest"
+    Destination = "Morningcrest"
+    Allegiance = "Aundair"
+    Destroyed = false
+    [Armies."First Cog".HP]
+      Current = 100
+      Max = 100
+  [Armies."First Gear"]
+    Name = "First Gear"
+    AC = 21
+    AttackRoll = ["d20"]
+    DamageRoll = ["d8"]
+    Location = "Fort Light"
+    Destination = "Fort Light"
+    Allegiance = "Aundair"
+    Destroyed = false
+    [Armies."First Gear".HP]
+      Current = 45
+      Max = 45
+  [Armies."First Host"]
+    Name = "First Host"
+    AC = 22
+    AttackRoll = ["d20"]
+    DamageRoll = ["d8+1"]
+    Location = "Athandra"
+    Destination = "Athandra"
+    Allegiance = "Thrane"
+    Destroyed = false
+    [Armies."First Host".HP]
+      Current = 40
+      Max = 40
+  [Armies."First Surgeons"]
+    Name = "First Surgeons"
+    AC = 21
+    AttackRoll = ["d20+5"]
+    DamageRoll = ["d6"]
+    Location = "Valiron"
+    Destination = "Valiron"
+    Allegiance = "Thrane"
+    Destroyed = false
+    [Armies."First Surgeons".HP]
+      Current = 50
+      Max = 50
+  [Armies."Fourth Cog"]
+    Name = "Fourth Cog"
+    AC = 20
+    AttackRoll = ["d20"]
+    DamageRoll = ["d6"]
+    Location = "Tellyn"
+    Destination = "Tellyn"
+    Allegiance = "Aundair"
+    Destroyed = false
+    [Armies."Fourth Cog".HP]
+      Current = 100
+      Max = 100
+  [Armies."Fourth Host"]
+    Name = "Fourth Host"
+    AC = 21
+    AttackRoll = ["d20+7"]
+    DamageRoll = ["d6+2"]
+    Location = "Sigilstar"
+    Destination = "Sigilstar"
+    Allegiance = "Thrane"
+    Destroyed = false
+    [Armies."Fourth Host".HP]
+      Current = 50
+      Max = 50
+  [Armies.Lightbringers]
+    Name = "Lightbringers"
+    AC = 23
+    AttackRoll = ["d20"]
+    DamageRoll = ["d8+1"]
+    Location = "Daskaran"
+    Destination = "Daskaran"
+    Allegiance = "Thrane"
+    Destroyed = false
+    [Armies.Lightbringers.HP]
+      Current = 20
+      Max = 20
+  [Armies."Second Chain"]
+    Name = "Second Chain"
+    AC = 19
+    AttackRoll = ["d20+3"]
+    DamageRoll = ["d4"]
+    Location = "Athandra"
+    Destination = "Athandra"
+    Allegiance = "Aundair"
+    Destroyed = false
+    [Armies."Second Chain".HP]
+      Current = 17
+      Max = 20
+  [Armies."Second Cog"]
+    Name = "Second Cog"
+    AC = 20
+    AttackRoll = ["d20+6"]
+    DamageRoll = ["d6+1"]
+    Location = "Thaliost"
+    Destination = "Thaliost"
+    Allegiance = "Aundair"
+    Destroyed = false
+    [Armies."Second Cog".HP]
+      Current = 100
+      Max = 100
+  [Armies."Second Gear"]
+    Name = "Second Gear"
+    AC = 19
+    AttackRoll = ["d20+6"]
+    DamageRoll = ["d8"]
+    Location = "Tellyn"
+    Destination = "Tellyn"
+    Allegiance = "Aundair"
+    Destroyed = false
+    [Armies."Second Gear".HP]
+      Current = 35
+      Max = 35
+  [Armies."Second Host"]
+    Name = "Second Host"
+    AC = 22
+    AttackRoll = ["d20+6"]
+    DamageRoll = ["d8+1"]
+    Location = "Flamekeep"
+    Destination = "Flamekeep"
+    Allegiance = "Thrane"
+    Destroyed = false
+    [Armies."Second Host".HP]
+      Current = 40
+      Max = 40
+  [Armies."Second Surgeons"]
+    Name = "Second Surgeons"
+    AC = 19
+    AttackRoll = ["d20+3"]
+    DamageRoll = ["d4"]
+    Location = "Daskaran"
+    Destination = "Daskaran"
+    Allegiance = "Thrane"
+    Destroyed = false
+    [Armies."Second Surgeons".HP]
+      Current = 35
+      Max = 35
+  [Armies."Sixth Host"]
+    Name = "Sixth Host"
+    AC = 19
+    AttackRoll = ["d20"]
+    DamageRoll = ["2d6"]
+    Location = "Silvercliff Castle"
+    Destination = "Silvercliff Castle"
+    Allegiance = "Thrane"
+    Destroyed = false
+    [Armies."Sixth Host".HP]
+      Current = 100
+      Max = 100
+  [Armies."The Blade"]
+    Name = "The Blade"
+    AC = 24
+    AttackRoll = ["d20+8"]
+    DamageRoll = ["d6+1"]
+    Location = "Sigilstar"
+    Destination = "Sigilstar"
+    Allegiance = "Aundair"
+    Destroyed = false
+    [Armies."The Blade".HP]
+      Current = 15
+      Max = 15
+  [Armies."The Cinch"]
+    Name = "The Cinch"
+    AC = 23
+    AttackRoll = ["d20+7"]
+    DamageRoll = ["2d4+2"]
+    Location = "Athandra"
+    Destination = "Athandra"
+    Allegiance = "Aundair"
+    Destroyed = false
+    [Armies."The Cinch".HP]
+      Current = 15
+      Max = 15
+  [Armies."The Hammer"]
+    Name = "The Hammer"
+    AC = 24
+    AttackRoll = ["d20+7"]
+    DamageRoll = ["d6+1"]
+    Location = "Thaliost"
+    Destination = "Thaliost"
+    Allegiance = "Aundair"
+    Destroyed = false
+    [Armies."The Hammer".HP]
+      Current = 15
+      Max = 15
+  [Armies."Third Cog"]
+    Name = "Third Cog"
+    AC = 20
+    AttackRoll = ["d20+6"]
+    DamageRoll = ["d6"]
+    Location = "Fort Light"
+    Destination = "Fort Light"
+    Allegiance = "Aundair"
+    Destroyed = false
+    [Armies."Third Cog".HP]
+      Current = 100
+      Max = 100
+  [Armies."Third Host"]
+    Name = "Third Host"
+    AC = 22
+    AttackRoll = ["d20+6"]
+    DamageRoll = ["d8+1"]
+    Location = "Rellekor"
+    Destination = "Rellekor"
+    Allegiance = "Thrane"
+    Destroyed = false
+    [Armies."Third Host".HP]
+      Current = 40
+      Max = 40
+  [Armies.Truthspeakers]
+    Name = "Truthspeakers"
+    AC = 25
+    AttackRoll = ["d20+8"]
+    DamageRoll = ["2d4"]
+    Location = "Tellyn"
+    Destination = "Tellyn"
+    Allegiance = "Thrane"
+    Destroyed = false
+    [Armies.Truthspeakers.HP]
+      Current = 15
+      Max = 15
+
+[Actors]
+  [Actors.Aundair]
+    Name = "Aundair"
+  [Actors.Thrane]
+    Name = "Thrane"
