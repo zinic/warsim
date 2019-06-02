@@ -173,6 +173,17 @@ func (s *World) WriteWorld(body *DocumentElement) {
 
 			fieldName := statsCell.Element(Span)
 			fieldName.Attributes["style"] = "font-weight: bold;"
+			fieldName.Text = "Allegiance"
+
+			row.Element(TableCell).Element(Span).Text = printer.Sprint(settlement.Allegiance)
+		})
+
+		statsTable.Element(TableRow).Do(func(row *DocumentElement) {
+			statsCell := row.Element(TableCell)
+			statsCell.Attributes["style"] = "padding-right: 30px;"
+
+			fieldName := statsCell.Element(Span)
+			fieldName.Attributes["style"] = "font-weight: bold;"
 			fieldName.Text = "HP"
 
 			row.Element(TableCell).Element(Span).Text = printer.Sprintf("%d / %d", settlement.HP.Current, settlement.HP.Max)
