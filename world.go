@@ -92,180 +92,216 @@ func (s *World) ArmiesByActor() map[string]ArmyList {
 	return armyMap
 }
 
-func (s *World) Markdown(upstreamOutput *strings.Builder) {
-	html := NewElement(HTRoot)
-	body := html.Element(HTBody)
-	rootDiv := body.Element(HTDiv)
-
-	rootDiv.Element(HTH1).Text = "Animus Warsim"
+func (s *World) WriteWorld(body *DocumentElement) {
+	rootDiv := body.Element(Division)
+	rootDiv.Element(H1).Text = "Animus Warsim"
 
 	sortedActors := s.SortedActors()
 	settlementsByActor := s.SettlementsByActor()
 
-	settlementsDiv := rootDiv.Element(HTDiv)
+	settlementsDiv := rootDiv.Element(Division)
 	for _, actor := range sortedActors {
-		settlementsDiv.Element(HTH2).Text = fmt.Sprintf("%s Occupied Settlements", actor.Name)
+		settlementsDiv.Element(H2).Text = fmt.Sprintf("%s Occupied Settlements", actor.Name)
 
-		settlementList := settlementsDiv.Element(HTUL)
+		settlementList := settlementsDiv.Element(UnorderedList)
 		for _, settlement := range settlementsByActor[actor.Name].Sorted() {
-			settlementLink := settlementList.Element(HTLI).Element(HTA)
+			settlementLink := settlementList.Element(ListItem).Element(Anchor)
 			settlementLink.Attributes["href"] = fmt.Sprintf("#%s", DocumentID(settlement.Name))
 			settlementLink.Text = settlement.Name
 		}
 	}
 
-	armiesDiv := rootDiv.Element(HTDiv)
+	armiesDiv := rootDiv.Element(Division)
 	armiesByActor := s.ArmiesByActor()
 	for _, actor := range sortedActors {
-		armiesDiv.Element(HTH2).Text = fmt.Sprintf("%s Armies", actor.Name)
+		armiesDiv.Element(H2).Text = fmt.Sprintf("%s Armies", actor.Name)
 
-		armyList := armiesDiv.Element(HTUL)
+		armyList := armiesDiv.Element(UnorderedList)
 		for _, army := range armiesByActor[actor.Name].Sorted() {
-			armyLink := armyList.Element(HTLI).Element(HTA)
+			armyLink := armyList.Element(ListItem).Element(Anchor)
 			armyLink.Attributes["href"] = fmt.Sprintf("#%s", DocumentID(army.Name))
 			armyLink.Text = army.Name
 		}
 	}
 
-	for i := 0; i < 10; i++ {
-		rootDiv.Element(HTBR)
+	for i := 0; i < 4; i++ {
+		rootDiv.Element(BR)
 	}
 
-	settlementDetailsDiv := rootDiv.Element(HTDiv)
-	settlementDetailsDiv.Element(HTH1).Text = "Settlement Details"
-	for _, settlement := range SettlementListFromMap(s.Settlements).Sorted() {
-		settlementDiv := settlementDetailsDiv.Element(HTDiv)
-		settlementDiv.Element(SPAN).Attributes["id"] = DocumentID(settlement.Name)
-		settlementDiv.Element(HTH2).Text = settlement.Name
+	settlementDetailsDiv := rootDiv.Element(Division)
+	settlementDetailsDiv.Element(H1).Text = "Settlement Details"
 
-		table := settlementDiv.Element(TABLE)
-		table.Element(TR).Do(func(row *Element) {
-			fieldName := row.Element(TD).Element(SPAN)
+	for _, settlement := range SettlementListFromMap(s.Settlements).Sorted() {
+		settlementDiv := settlementDetailsDiv.Element(Division)
+		settlementDiv.Attributes["style"] = "display: inline-block; background: #EFEFEF; margin-bottom: 30px; padding-left: 15px; padding-right: 15px; padding-top: 1px; border: solid 1px black;"
+		settlementDiv.Element(Span).Attributes["id"] = DocumentID(settlement.Name)
+		settlementDiv.Element(H2).Text = settlement.Name
+
+		settlementDetailsTable := settlementDiv.Element(Table)
+		statsTableHeadersRow := settlementDetailsTable.Element(TableHeaders).Element(TableRow)
+		statsTableHeadersRow.Element(TableCell).Text = NewElement(Span, "Statistics", ElementAttributes{
+			"style": "font-weight: bold; font-size: 14pt;",
+		}).String()
+
+		statsTableHeadersRow.Element(TableCell).Do(func(cell *DocumentElement) {
+			cell.Text = NewElement(Span, "Fortifications", ElementAttributes{
+				"style": "font-weight: bold; font-size: 14pt;",
+			}).String()
+
+			cell.Attributes["style"] = "padding-left: 15px;"
+		})
+
+		statsRow := settlementDetailsTable.Element(TableRow)
+		detailsCell := statsRow.Element(TableCell)
+		detailsCell.Attributes["style"] = "vertical-align: top;"
+
+		statsTable := detailsCell.Element(Table)
+		statsTable.Element(TableRow).Do(func(row *DocumentElement) {
+			statsCell := row.Element(TableCell)
+			statsCell.Attributes["style"] = "padding-right: 30px;"
+
+			fieldName := statsCell.Element(Span)
 			fieldName.Attributes["style"] = "font-weight: bold;"
 			fieldName.Text = "Population"
 
-			row.Element(TD).Element(SPAN).Text = printer.Sprint(settlement.Population)
+			row.Element(TableCell).Element(Span).Text = printer.Sprint(settlement.Population)
 		})
 
-		table.Element(TR).Do(func(row *Element) {
-			fieldName := row.Element(TD).Element(SPAN)
+		statsTable.Element(TableRow).Do(func(row *DocumentElement) {
+			statsCell := row.Element(TableCell)
+			statsCell.Attributes["style"] = "padding-right: 30px;"
+
+			fieldName := statsCell.Element(Span)
 			fieldName.Attributes["style"] = "font-weight: bold;"
 			fieldName.Text = "HP"
 
-			row.Element(TD).Element(SPAN).Text = printer.Sprintf("%d / %d", settlement.HP.Current, settlement.HP.Max)
+			row.Element(TableCell).Element(Span).Text = printer.Sprintf("%d / %d", settlement.HP.Current, settlement.HP.Max)
 		})
 
-		table.Element(TR).Do(func(row *Element) {
-			fieldName := row.Element(TD).Element(SPAN)
+		statsTable.Element(TableRow).Do(func(row *DocumentElement) {
+			statsCell := row.Element(TableCell)
+			statsCell.Attributes["style"] = "padding-right: 30px;"
+
+			fieldName := statsCell.Element(Span)
 			fieldName.Attributes["style"] = "font-weight: bold;"
 			fieldName.Text = "AC"
 
-			row.Element(TD).Element(SPAN).Text = printer.Sprint(settlement.AC())
+			row.Element(TableCell).Element(Span).Text = printer.Sprint(settlement.AC())
 		})
 
-		table.Element(TR).Do(func(row *Element) {
-			fieldName := row.Element(TD).Element(SPAN)
+		statsTable.Element(TableRow).Do(func(row *DocumentElement) {
+			statsCell := row.Element(TableCell)
+			statsCell.Attributes["style"] = "padding-right: 30px;"
+
+			fieldName := statsCell.Element(Span)
 			fieldName.Attributes["style"] = "font-weight: bold;"
 			fieldName.Text = "Attack Roll"
 
-			row.Element(TD).Element(SPAN).Text = printer.Sprint(settlement.AttackRoll())
+			row.Element(TableCell).Element(Span).Text = printer.Sprint(settlement.AttackRoll())
 		})
 
-		table.Element(TR).Do(func(row *Element) {
-			fieldName := row.Element(TD).Element(SPAN)
+		statsTable.Element(TableRow).Do(func(row *DocumentElement) {
+			statsCell := row.Element(TableCell)
+			statsCell.Attributes["style"] = "padding-right: 30px;"
+
+			fieldName := statsCell.Element(Span)
 			fieldName.Attributes["style"] = "font-weight: bold;"
 			fieldName.Text = "Attack Damage"
 
-			row.Element(TD).Element(SPAN).Text = printer.Sprint(settlement.DamageRoll)
+			row.Element(TableCell).Element(Span).Text = printer.Sprint(settlement.DamageRoll)
 		})
 
-		settlementDiv.Element(HTH3).Text = "Settlement Fortifications"
-		fortificationList := settlementDiv.Element(HTUL)
+		detailsCell = statsRow.Element(TableCell)
+		fortificationList := detailsCell.Element(UnorderedList)
+		fortificationList.Attributes["style"] = "list-style-type: none;"
 
 		for _, fortification := range settlement.Fortifications {
-			listItem := fortificationList.Element(HTLI)
+			listItem := fortificationList.Element(ListItem)
 			listItem.Attributes["style"] = "padding-top: 10px;"
-			listItem.Element(SPAN).Text = fortification.Name
+			listItem.Element(Span).Text = fortification.Name
 
-			table = listItem.Element(TABLE)
-			table.Attributes["style"] = "margin-left: 20px;"
+			statsTable = listItem.Element(Table)
+			statsTable.Attributes["style"] = "margin-left: 20px;"
 
-			table.Element(TR).Do(func(row *Element) {
-				fieldName := row.Element(TD).Element(SPAN)
+			statsTable.Element(TableRow).Do(func(row *DocumentElement) {
+				fieldName := row.Element(TableCell).Element(Span)
 				fieldName.Attributes["style"] = "font-weight: bold;"
 				fieldName.Text = "Defense Modifier"
 
-				row.Element(TD).Element(SPAN).Text = printer.Sprint(fortification.DefenseModifier)
+				row.Element(TableCell).Element(Span).Text = printer.Sprint(fortification.DefenseModifier)
 			})
 
-			table.Element(TR).Do(func(row *Element) {
-				fieldName := row.Element(TD).Element(SPAN)
+			statsTable.Element(TableRow).Do(func(row *DocumentElement) {
+				fieldName := row.Element(TableCell).Element(Span)
 				fieldName.Attributes["style"] = "font-weight: bold;"
 				fieldName.Text = "Attack Modifier"
 
-				row.Element(TD).Element(SPAN).Text = printer.Sprint(fortification.AttackModifier)
+				row.Element(TableCell).Element(Span).Text = printer.Sprint(fortification.AttackModifier)
 			})
 		}
+
+		settlementDetailsDiv.Element(Division).Attributes["style"] = "display: block;"
 	}
 
-	armyDetailsDiv := rootDiv.Element(HTDiv)
-	armyDetailsDiv.Element(HTH1).Text = "Army Details"
+	armyDetailsDiv := rootDiv.Element(Division)
+	armyDetailsDiv.Element(H1).Text = "Army Details"
 
 	for _, army := range s.Armies {
-		armyDiv := settlementDetailsDiv.Element(HTDiv)
-		armyDiv.Element(SPAN).Attributes["id"] = DocumentID(army.Name)
-		armyDiv.Element(HTH2).Text = army.Name
+		armyDiv := settlementDetailsDiv.Element(Division)
+		armyDiv.Element(Span).Attributes["id"] = DocumentID(army.Name)
+		armyDiv.Element(H2).Text = army.Name
 
-		table := armyDiv.Element(TABLE)
-		table.Element(TR).Do(func(row *Element) {
-			fieldName := row.Element(TD).Element(SPAN)
+		table := armyDiv.Element(Table)
+		table.Element(TableRow).Do(func(row *DocumentElement) {
+			fieldName := row.Element(TableCell).Element(Span)
 			fieldName.Attributes["style"] = "font-weight: bold;"
 			fieldName.Text = "Location"
 
-			row.Element(TD).Element(SPAN).Text = printer.Sprint(army.Location)
+			row.Element(TableCell).Element(Span).Text = printer.Sprint(army.Location)
 		})
 
-		table.Element(TR).Do(func(row *Element) {
-			fieldName := row.Element(TD).Element(SPAN)
+		table.Element(TableRow).Do(func(row *DocumentElement) {
+			fieldName := row.Element(TableCell).Element(Span)
 			fieldName.Attributes["style"] = "font-weight: bold;"
 			fieldName.Text = "HP"
 
-			row.Element(TD).Element(SPAN).Text = printer.Sprintf("%d / %d", army.HP.Current, army.HP.Max)
+			row.Element(TableCell).Element(Span).Text = printer.Sprintf("%d / %d", army.HP.Current, army.HP.Max)
 		})
 
-		table.Element(TR).Do(func(row *Element) {
-			fieldName := row.Element(TD).Element(SPAN)
+		table.Element(TableRow).Do(func(row *DocumentElement) {
+			fieldName := row.Element(TableCell).Element(Span)
 			fieldName.Attributes["style"] = "font-weight: bold;"
 			fieldName.Text = "AC"
 
-			row.Element(TD).Element(SPAN).Text = printer.Sprint(army.AC)
+			row.Element(TableCell).Element(Span).Text = printer.Sprint(army.AC)
 		})
 
-		table.Element(TR).Do(func(row *Element) {
-			fieldName := row.Element(TD).Element(SPAN)
+		table.Element(TableRow).Do(func(row *DocumentElement) {
+			fieldName := row.Element(TableCell).Element(Span)
 			fieldName.Attributes["style"] = "font-weight: bold;"
 			fieldName.Text = "Attack Roll"
 
-			row.Element(TD).Element(SPAN).Text = army.AttackRoll.String()
+			row.Element(TableCell).Element(Span).Text = army.AttackRoll.String()
 		})
 
-		table.Element(TR).Do(func(row *Element) {
-			fieldName := row.Element(TD).Element(SPAN)
+		table.Element(TableRow).Do(func(row *DocumentElement) {
+			fieldName := row.Element(TableCell).Element(Span)
 			fieldName.Attributes["style"] = "font-weight: bold;"
 			fieldName.Text = "Attack Damage"
 
-			row.Element(TD).Element(SPAN).Text = printer.Sprint(army.DamageRoll)
+			row.Element(TableCell).Element(Span).Text = printer.Sprint(army.DamageRoll)
 		})
 	}
-
-	html.Output(upstreamOutput)
 }
 
-func (s *World) stepArmies(output *strings.Builder) bool {
+func (s *World) stepArmies(log *DocumentElement) bool {
 	var (
 		forcesReady      ArmyList
 		activityObserved = false
 	)
+
+	actionList := log.Element(UnorderedList)
+	actionList.Attributes["style"] = "list-style-type: none;"
 
 	// Any army that moves may not act in the same turn. This is why we track ready armies in the
 	// forcesReady array
@@ -277,8 +313,7 @@ func (s *World) stepArmies(output *strings.Builder) bool {
 
 		// If the destination of the army is not equal to the location then the army needs to move
 		if army.Destination != army.Location {
-			output.WriteString(fmt.Sprintf("Army %s is travelling from %s to %s.", army.Name, army.Location, army.Destination))
-			army.Location = army.Destination
+			actionList.Element(ListItem).Text = fmt.Sprintf("Army %s is travelling from %s to %s.", NameLink(army.Name), army.Location, army.Destination)
 
 			activityObserved = true
 		} else {
@@ -296,7 +331,7 @@ func (s *World) stepArmies(output *strings.Builder) bool {
 			if army.Allegiance != actorName {
 				// Pick the first army in our location
 				for _, target := range otherArmies {
-					if army.Location != target.Location {
+					if target.Destroyed || army.Location != target.Location {
 						continue
 					}
 
@@ -305,22 +340,22 @@ func (s *World) stepArmies(output *strings.Builder) bool {
 
 					if armyAttackRoll, err := army.AttackRoll.Roll(); err != nil {
 						panic(fmt.Sprintf("Bad roll: %v", err))
-					} else if armyAttackRoll > target.AC {
+					} else if armyAttackRoll >= target.AC {
 						// If the army beats the settlement's AC value then roll the damage
 						if damage, err := army.DamageRoll.Roll(); err != nil {
 							panic(fmt.Sprintf("Bad roll: %v", err))
 						} else {
-							output.WriteString(fmt.Sprintf("Army <span style=\"font-weight: bold;\">%s</span> attacks army <span style=\"font-weight: bold;\">%s</span> (AC: %d) with a %d attack roll and %d damage!<br />\n", army.Name, target.Name, target.AC, armyAttackRoll, damage))
+							actionList.Element(ListItem).Text = fmt.Sprintf("Army %s attacks army %s (AC: %d) rolling a %d for attack and %d for damage!",
+								NameLink(army.Name), NameLink(target.Name), target.AC, armyAttackRoll, damage)
 
 							// Apply the damage and see if the settlement is overcome
-							target.HP.Damage(damage)
-							if target.HP.Current <= 0 {
-								output.WriteString(fmt.Sprintf("Army <span style=\"font-weight: bold;\">%s</span> has destroyed army <span style=\"font-weight: bold;\">%s</span>!<br />\n", army.Name, target.Name))
-								army.Destroyed = true
+							if target.Damage(damage); target.Destroyed {
+								actionList.Element(ListItem).Text = fmt.Sprintf("Army %s has destroyed army %s!", NameLink(army.Name), NameLink(target.Name))
 							}
 						}
 					} else {
-						output.WriteString(fmt.Sprintf("Army <span style=\"font-weight: bold;\">%s</span> misses army <span style=\"font-weight: bold;\">%s</span> (AC: %d) with a(n) %d attack roll!<br />\n", army.Name, target.Name, target.AC, armyAttackRoll))
+						actionList.Element(ListItem).Text = fmt.Sprintf("Army %s misses army %s (AC: %d) rolling a %d for attack.",
+							NameLink(army.Name), NameLink(target.Name), target.AC, armyAttackRoll)
 					}
 
 					break
@@ -343,31 +378,37 @@ func (s *World) stepArmies(output *strings.Builder) bool {
 
 			if armyAttackRoll, err := army.AttackRoll.Roll(); err != nil {
 				panic(fmt.Sprintf("Bad roll: %v", err))
-			} else if armyAttackRoll > target.AC() {
+			} else if armyAttackRoll >= target.AC() {
 				// If the army beats the settlement's AC value then roll the damage
 				if damage, err := army.DamageRoll.Roll(); err != nil {
 					panic(fmt.Sprintf("Bad roll: %v", err))
 				} else {
-					output.WriteString(fmt.Sprintf("Army <span style=\"font-weight: bold;\">%s</span> attacks settlement <span style=\"font-weight: bold;\">%s</span> (AC: %d) with a %d attack roll and %d damage!<br />\n", army.Name, target.Name, target.AC(), armyAttackRoll, damage))
+					actionList.Element(ListItem).Text = fmt.Sprintf("Army %s attacks settlement %s (AC: %d) rolling a %d for attack and %d for damage!",
+						NameLink(army.Name), NameLink(target.Name), target.AC(), armyAttackRoll, damage)
 
 					// Apply the damage and see if the settlement is overcome
 					target.HP.Damage(damage)
 					if target.HP.Current <= 0 {
 						if target.Occupied {
 							// If the settlement was occupied then we're liberating it
-							output.WriteString(fmt.Sprintf("Settlement <span style=\"font-weight: bold;\">%s</span> has been liberated by army <span style=\"font-weight: bold;\">%s</span>!<br />\n", target.Name, army.Name))
+							actionList.Element(ListItem).Text = fmt.Sprintf("Settlement %s has been liberated by army %s!",
+								NameLink(target.Name), NameLink(army.Name))
+
 							target.Occupied = false
 							target.Allegiance = army.Allegiance
 						} else {
 							// If the settlement wasn't occupied then it is now
-							output.WriteString(fmt.Sprintf("Settlement <span style=\"font-weight: bold;\">%s</span> has been occupied by army <span style=\"font-weight: bold;\">%s</span>!<br />\n", target.Name, army.Name))
+							actionList.Element(ListItem).Text = fmt.Sprintf("Settlement %s has been occupied by army %s!",
+								NameLink(target.Name), NameLink(army.Name))
+
 							target.Occupied = true
 							target.Allegiance = army.Allegiance
 						}
 					}
 				}
 			} else {
-				output.WriteString(fmt.Sprintf("Army <span style=\"font-weight: bold;\">%s</span> misses settlement <span style=\"font-weight: bold;\">%s</span> (AC: %d) with a(n) %d attack roll!<br />\n", army.Name, target.Name, target.AC(), armyAttackRoll))
+				actionList.Element(ListItem).Text = fmt.Sprintf("Army %s misses settlement %s (AC: %d) rolling a %d for attack.",
+					NameLink(army.Name), NameLink(target.Name), target.AC(), armyAttackRoll)
 			}
 		}
 	}
@@ -375,8 +416,19 @@ func (s *World) stepArmies(output *strings.Builder) bool {
 	return activityObserved
 }
 
-func (s *World) stepSettlements(output *strings.Builder) bool {
+func NameLink(name string) *DocumentElement {
+	anchor := Element(Anchor)
+	anchor.Attributes["href"] = fmt.Sprintf("#%s", DocumentID(name))
+	anchor.Text = name
+
+	return anchor
+}
+
+func (s *World) stepSettlements(log *DocumentElement) bool {
 	var activityObserved = false
+
+	actionList := log.Element(UnorderedList)
+	actionList.Attributes["style"] = "list-style-type: none;"
 
 	for _, settlement := range SettlementListFromMap(s.Settlements).Sorted() {
 		if !settlement.HasWarGuard {
@@ -387,7 +439,7 @@ func (s *World) stepSettlements(output *strings.Builder) bool {
 
 		if settlement.Occupied {
 			// Occupied Settlements get no action
-			output.WriteString(fmt.Sprintf("Settlement <span style=\"font-weight: bold;\">%s is occupied</span> and gets no action.<br />\n", settlement.Name))
+			actionList.Element(ListItem).Text = fmt.Sprintf("Settlement %s is occupied and gets no action.", NameLink(settlement.Name))
 			continue
 		}
 
@@ -398,18 +450,20 @@ func (s *World) stepSettlements(output *strings.Builder) bool {
 
 				if settlementAttackRoll, damage, err := settlement.RollAttack(); err != nil {
 					panic(fmt.Sprintf("Bad roll: %v", err))
-				} else if settlementAttackRoll > army.AC {
+				} else if settlementAttackRoll >= army.AC {
 					// If the settlement beats the army's AC then roll the damage
-					output.WriteString(fmt.Sprintf("Settlement <span style=\"font-weight: bold;\">%s</span> attacks army <span style=\"font-weight: bold;\">%s</span> (AC: %d) with a %d attack roll and %d damage!<br />\n", settlement.Name, army.Name, army.AC, settlementAttackRoll, damage))
+					actionList.Element(ListItem).Text = fmt.Sprintf("Settlement %s attacks army %s (AC: %d) rolling a %d for attack and %d for damage!",
+						NameLink(settlement.Name), NameLink(army.Name), army.AC, settlementAttackRoll, damage)
 
 					// Apply the damage and see if the army falls apart
-					army.HP.Damage(damage)
-					if army.HP.Current <= 0 {
-						output.WriteString(fmt.Sprintf("Settlement <span style=\"font-weight: bold;\">%s</span> has destroyed army <span style=\"font-weight: bold;\">%s</span>!<br />\n", settlement.Name, army.Name))
-						army.Destroyed = true
+					army.Damage(damage)
+					if army.Destroyed {
+						actionList.Element(ListItem).Text = fmt.Sprintf("Settlement %s has destroyed army %s!",
+							NameLink(settlement.Name), NameLink(army.Name))
 					}
 				} else {
-					output.WriteString(fmt.Sprintf("Settlement <span style=\"font-weight: bold;\">%s</span> misses army <span style=\"font-weight: bold;\">%s</span> (AC: %d) with a(n) %d attack roll!<br />\n", settlement.Name, army.Name, army.AC, settlementAttackRoll))
+					actionList.Element(ListItem).Text = fmt.Sprintf("Settlement %s misses army %s (AC: %d) rolling a %d for attack.",
+						NameLink(settlement.Name), NameLink(army.Name), army.AC, settlementAttackRoll)
 				}
 
 				break
@@ -421,21 +475,23 @@ func (s *World) stepSettlements(output *strings.Builder) bool {
 }
 
 func (s *World) Turn(turnID int, output *strings.Builder) bool {
-	output.WriteString("<div style=\"float: right; background: #E0E0E0;\">\n")
-	output.WriteString(fmt.Sprintf("<h1>Combat Log for Turn %d</h1>\n", turnID))
+	html := Element("html")
+	body := html.Element(HTBody)
+
+	combatLogDiv := body.Element(Division)
+	combatLogDiv.Attributes["style"] = "float: right; background: #EFEFEF; padding-left: 10px; padding-right: 10px; border: solid 1px black; width: 50%;"
+	combatLogDiv.Element(H1).Text = "Combat Log"
+	combatLogDiv.Element(H3).Text = fmt.Sprintf("Sim Turn: %d", turnID)
 
 	// Move armies first
-	armiesActive := s.stepArmies(output)
-
-	output.WriteString("<br />\n")
+	armiesActive := s.stepArmies(combatLogDiv)
 
 	// Allow Settlements to act last
-	settlementsActive := s.stepSettlements(output)
-
-	output.WriteString("</p></div>\n")
+	settlementsActive := s.stepSettlements(combatLogDiv)
 
 	// Dump the world state
-	s.Markdown(output)
+	s.WriteWorld(body)
+	html.Output(output)
 
 	// Return whether or not any activity took place this turn
 	return armiesActive || settlementsActive

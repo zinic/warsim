@@ -5,26 +5,48 @@ import (
 	"strings"
 )
 
+type HTMLTag string
+
+func (s HTMLTag) EmitNewlines() bool {
+	for _, tagValue := range nonNewlineTags {
+		if tagValue == s {
+			return false
+		}
+	}
+
+	return true
+}
+
+func (s HTMLTag) String() string {
+	return string(s)
+}
+
 const (
-	HTRoot = "root"
-	HTBody = "body"
-	HTDiv  = "div"
-	HTH1   = "h1"
-	HTH2   = "h2"
-	HTH3   = "h3"
-	HTH4   = "h4"
-	HTH5   = "h5"
-	HTUL   = "ul"
-	SPAN   = "span"
-	HTLI   = "li"
-	HTBR   = "br"
-	HTA    = "a"
-	TABLE  = "table"
-	TR     = "tr"
-	TD     = "td"
+	HTP           HTMLTag = "p"
+	HTRoot        HTMLTag = "root"
+	HTBody        HTMLTag = "body"
+	Division      HTMLTag = "div"
+	H1            HTMLTag = "h1"
+	H2            HTMLTag = "h2"
+	H3            HTMLTag = "h3"
+	H4            HTMLTag = "h4"
+	H5            HTMLTag = "h5"
+	UnorderedList HTMLTag = "ul"
+	Span          HTMLTag = "span"
+	ListItem      HTMLTag = "li"
+	BR            HTMLTag = "br"
+	Anchor        HTMLTag = "a"
+	Table         HTMLTag = "table"
+	TableHeaders  HTMLTag = "thead"
+	TableRow      HTMLTag = "tr"
+	TableCell     HTMLTag = "td"
 )
 
-type ContentDelegate func(element *Element)
+var nonNewlineTags = []HTMLTag{
+	Span,
+}
+
+type ContentDelegate func(element *DocumentElement)
 type ElementAttributes map[string]string
 
 func (s ElementAttributes) Format() string {
@@ -36,33 +58,46 @@ func (s ElementAttributes) Format() string {
 	return output.String()
 }
 
-type Element struct {
-	Tag        string
+type DocumentElement struct {
+	Tag        HTMLTag
 	Text       string
 	Attributes ElementAttributes
-	Children   []*Element
+	Children   []*DocumentElement
 }
 
-func NewElement(tag string) *Element {
-	return &Element{
+func Element(tag HTMLTag) *DocumentElement {
+	return &DocumentElement{
 		Tag:        tag,
 		Attributes: ElementAttributes{},
 	}
 }
 
-func (s *Element) Element(tag string) *Element {
-	element := NewElement(tag)
+func NewElement(tag HTMLTag, text string, attrs ElementAttributes) *DocumentElement {
+	return &DocumentElement{
+		Tag:        tag,
+		Text:       text,
+		Attributes: attrs,
+	}
+}
+
+func (s *DocumentElement) Push(child *DocumentElement) *DocumentElement {
+	s.Children = append(s.Children, child)
+	return s
+}
+
+func (s *DocumentElement) Element(tag HTMLTag) *DocumentElement {
+	element := Element(tag)
 	s.Children = append(s.Children, element)
 
 	return element
 }
 
-func (s *Element) Do(delegate ContentDelegate) {
+func (s *DocumentElement) Do(delegate ContentDelegate) {
 	delegate(s)
 }
 
-func (s *Element) openingTag() string {
-	tagContent := s.Tag
+func (s *DocumentElement) openingTag() string {
+	tagContent := s.Tag.String()
 	if attrs := s.Attributes.Format(); len(attrs) > 0 {
 		tagContent = fmt.Sprintf("%s %s", s.Tag, attrs)
 	}
@@ -70,23 +105,35 @@ func (s *Element) openingTag() string {
 	return fmt.Sprintf("<%s>", tagContent)
 }
 
-func (s *Element) closingTag() string {
+func (s *DocumentElement) closingTag() string {
 	return fmt.Sprintf("</%s>", s.Tag)
 }
 
-func (s *Element) Output(builder *strings.Builder) {
-	builder.WriteString(s.openingTag())
-	builder.WriteRune('\n')
+func (s *DocumentElement) Output(builder *strings.Builder) {
+	emitNewlines := s.Tag.EmitNewlines()
+
+	if builder.WriteString(s.openingTag()); emitNewlines {
+		builder.WriteRune('\n')
+	}
 
 	if len(s.Text) > 0 {
-		builder.WriteString(s.Text)
-		builder.WriteRune('\n')
+		if builder.WriteString(s.Text); emitNewlines {
+			builder.WriteRune('\n')
+		}
 	}
 
 	for _, child := range s.Children {
 		child.Output(builder)
 	}
 
-	builder.WriteString(s.closingTag())
-	builder.WriteRune('\n')
+	if builder.WriteString(s.closingTag()); emitNewlines {
+		builder.WriteRune('\n')
+	}
+}
+
+func (s *DocumentElement) String() string {
+	builder := &strings.Builder{}
+	s.Output(builder)
+
+	return builder.String()
 }

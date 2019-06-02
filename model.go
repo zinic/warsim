@@ -76,9 +76,10 @@ func (s *Simulation) Turn() error {
 		return err
 	}
 
-	if file, err := os.OpenFile("rendered.html", os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0644); err != nil {
+	renderedFileName := fmt.Sprintf("rendered.%d.html", s.Step)
+	if file, err := os.OpenFile(renderedFileName, os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0644); err != nil {
 		return err
-	} else if _, err := file.WriteString(fmt.Sprintf("<html><body>%s</body></html>\n", output)); err != nil {
+	} else if _, err := file.WriteString(output.String()); err != nil {
 		return err
 	}
 
@@ -96,7 +97,11 @@ type HealthTracker struct {
 }
 
 func (s *HealthTracker) Damage(amount int) {
-	s.Current -= amount
+	if s.Current - amount < 0 {
+		s.Current = 0
+	} else {
+		s.Current -= amount
+	}
 }
 
 type FortificationType uint
@@ -125,6 +130,11 @@ type Army struct {
 	Destination string
 	Allegiance  string
 	Destroyed   bool
+}
+
+func (s *Army) Damage(amount int) {
+	s.HP.Damage(amount)
+	s.Destroyed = s.HP.Current <= 0
 }
 
 type ArmyList []*Army

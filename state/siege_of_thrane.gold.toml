@@ -663,8 +663,8 @@
     Destroyed = false
 
     [Armies."Demon's Bane".HP]
-      Current = 20
-      Max = 20
+      Current = 40
+      Max = 40
 
   [Armies."Fifth Cog"]
     Name = "Fifth Cog"
@@ -803,8 +803,8 @@
     Destroyed = false
 
     [Armies.Lightbringers.HP]
-      Current = 20
-      Max = 20
+      Current = 40
+      Max = 40
 
   [Armies."Second Chain"]
     Name = "Second Chain"
@@ -818,7 +818,7 @@
 
     [Armies."Second Chain".HP]
       Current = 17
-      Max = 20
+      Max = 40
 
   [Armies."Second Cog"]
     Name = "Second Cog"
@@ -845,8 +845,8 @@
     Destroyed = false
 
     [Armies."Second Gear".HP]
-      Current = 35
-      Max = 35
+      Current = 45
+      Max = 45
 
   [Armies."Second Host"]
     Name = "Second Host"
@@ -894,15 +894,15 @@
     Name = "The Blade"
     AC = 24
     AttackRoll = ["d20+8"]
-    DamageRoll = ["d6+1"]
+    DamageRoll = ["d8+1"]
     Location = "Sigilstar"
     Destination = "Sigilstar"
     Allegiance = "Mechanist"
     Destroyed = false
 
     [Armies."The Blade".HP]
-      Current = 15
-      Max = 15
+      Current = 45
+      Max = 45
 
   [Armies."The Cinch"]
     Name = "The Cinch"
@@ -915,22 +915,22 @@
     Destroyed = false
 
     [Armies."The Cinch".HP]
-      Current = 15
-      Max = 15
+      Current = 45
+      Max = 45
 
   [Armies."The Hammer"]
     Name = "The Hammer"
     AC = 24
     AttackRoll = ["d20+7"]
-    DamageRoll = ["d6+1"]
+    DamageRoll = ["d8+1"]
     Location = "Thaliost"
     Destination = "Thaliost"
     Allegiance = "Mechanist"
     Destroyed = false
 
     [Armies."The Hammer".HP]
-      Current = 15
-      Max = 15
+      Current = 35
+      Max = 35
 
   [Armies."Third Cog"]
     Name = "Third Cog"
