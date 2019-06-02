@@ -15,7 +15,7 @@ func LoadWorld(path string) (*World, error) {
 }
 
 func WriteWorld(path string, world *World) error {
-	if file, err := os.OpenFile(path, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0644); err != nil {
+	if file, err := os.OpenFile(path, os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0644); err != nil {
 		return err
 	} else if err := toml.NewEncoder(file).Encode(world); err != nil {
 		return err

@@ -49,6 +49,10 @@ func parseFacesAndModifier(facesModifierStr string) (int, int, error) {
 	return int(faces), int(modifier), nil
 }
 
+var (
+	D20 = Die("d20")
+)
+
 type Die string
 
 func (s Die) String() string {
@@ -101,4 +105,17 @@ func (s RollSpec) Roll() (int, error) {
 	}
 
 	return sum, nil
+}
+
+func (s RollSpec) String() string {
+	output := strings.Builder{}
+	for idx, die := range s {
+		if idx == 0 {
+			output.WriteString(die.String())
+		} else {
+			output.WriteString(fmt.Sprintf(", %s", die.String()))
+		}
+	}
+
+	return output.String()
 }
