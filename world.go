@@ -258,7 +258,7 @@ func (s *World) WriteWorld(body *DocumentElement) {
 	armyDetailsDiv.Element(H1).Text = "Army Details"
 
 	for _, army := range s.Armies {
-		armyDiv := settlementDetailsDiv.Element(Division)
+		armyDiv := armyDetailsDiv.Element(Division)
 		armyDiv.Element(Span).Attributes["id"] = DocumentID(army.Name)
 		armyDiv.Element(H2).Text = army.Name
 
@@ -269,6 +269,14 @@ func (s *World) WriteWorld(body *DocumentElement) {
 			fieldName.Text = "Location"
 
 			row.Element(TableCell).Element(Span).Text = printer.Sprint(army.Location)
+		})
+
+		table.Element(TableRow).Do(func(row *DocumentElement) {
+			fieldName := row.Element(TableCell).Element(Span)
+			fieldName.Attributes["style"] = "font-weight: bold;"
+			fieldName.Text = "Allegiance"
+
+			row.Element(TableCell).Element(Span).Text = army.Allegiance
 		})
 
 		table.Element(TableRow).Do(func(row *DocumentElement) {

@@ -44,6 +44,7 @@ const (
 
 var nonNewlineTags = []HTMLTag{
 	Span,
+	Anchor,
 }
 
 type ContentDelegate func(element *DocumentElement)
